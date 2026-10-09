@@ -1,8 +1,8 @@
-import { r } from 'node:stream';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { bundles, keyList, rankList } from '../data/shop';
 import RankCard from '../components/RankCard';
+import KeyCard from '../components/KeyCard';
 
 export default function ShopPage() {
   const { addItem } = useCart();
@@ -59,8 +59,8 @@ export default function ShopPage() {
             if ('id' in entry && 'prefix' in entry) {
               return <RankCard key={entry.id} rank={entry} onAddToCart={handleRankAdd} />;
             }
-            if ('id' in entry && 'basePrice' in entry) {
-              return <div key={entry.id}>placeholder</div>;
+            if ('id' in entry && 'prices' in entry) {
+              return <KeyCard key={entry.id} item={entry} onAddToCart={handleKeyAdd} />;
             }
             return (
               <article key={entry.id} className="product-card bundle-card">
@@ -71,7 +71,9 @@ export default function ShopPage() {
                   <span className="price-tag">{entry.price} zł</span>
                   <span className="old-price">{entry.original} zł</span>
                 </div>
-                <button type="button" className="primary-button" onClick={() => addItem({ type: 'bundle', productId: entry.id, variant: 'bundle', nick: '', price: entry.price, label: entry.name })}>Dodaj do koszyka</button>
+                <button type="button" className="primary-button" onClick={() => addItem({ type: 'bundle', productId: entry.id, variant: 'bundle', nick: '', price: entry.price, label: entry.name })}>
+                  Dodaj do koszyka
+                </button>
               </article>
             );
           })}
